@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: new-api
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    region: oregon
+    plan: free
+    branch: main
+    healthCheckPath: /api/status
+    envVars:
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: TZ
+        value: Asia/Shanghai
+      - key: SQL_DSN
+        fromDatabase:
+          name: new-api-db
+          property: connectionString
+      - key: REDIS_CONN_STRING
+        fromService:
+          type: redis
+          name: new-api-redis
+          property: connectionString
+
+  - type: redis
+    name: new-api-redis
+    region: oregon
+    plan: free
+    maxmemoryPolicy: allkeys-lru
+
+databases:
+  - name: new-api-db
+    region: oregon
+    plan: free
+    databaseName: new-api
+    user: new_api_user
