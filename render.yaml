@@ -28,10 +28,11 @@ services:
     region: oregon
     plan: free
     maxmemoryPolicy: allkeys-lru
+    ipAllowList: []
 
 databases:
   - name: new-api-db
     region: oregon
     plan: free
-    databaseName: new-api
+    databaseName: new_api
     user: new_api_user
